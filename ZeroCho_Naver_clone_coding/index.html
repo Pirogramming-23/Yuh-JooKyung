@@ -89,6 +89,7 @@
     #header {
       text-align: left;
       position: relative;
+      height: 64px;
     }
     #header-hamburger, #header-naverpay, #header-chat, #header-notice, #header-navershopping {
       position: absolute;
@@ -227,7 +228,14 @@
           <!-- after -->
         </button>
       </div>
-      <div id="search"></div>
+      <div id="search">
+        <!-- input에서 enter를 쳤을 떄 다음 페이지로 넘어감. input만 있을 떄는 안 넘어감. -->
+        <form action="">
+          <label for="search-input" class="blind">검색어 입력</label>
+          <input id="search-input" type="text">
+          <button class="blind">검색</button>
+        </form>
+      </div>
       <div id="nav"></div>
       <div id="main"></div>
     </div>
