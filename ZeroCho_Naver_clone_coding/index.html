@@ -74,7 +74,7 @@
     * {
       box-sizing: border-box;
     }
-    body, html {
+    body, html, form, a {
       margin: 0;
       padding: 0;
     }
@@ -89,7 +89,7 @@
     #header {
       text-align: left;
       position: relative;
-      height: 64px;
+      height: 52px;
     }
     #header-hamburger, #header-naverpay, #header-chat, #header-notice, #header-navershopping {
       position: absolute;
@@ -228,9 +228,46 @@
           <!-- after -->
         </button>
       </div>
+      <style>
+        #search > form {
+          display: inline-block;
+          width: 708px;
+          height: 60px;
+          border: 1px solid #03c75a;
+          border-radius: 33px;
+          text-align: left;
+        }
+        #search > form > input {
+          width: 480px;
+          height: 100%;
+          padding: 17px 0;
+          border: none;
+          outline: none;
+          text-align: left;
+          display: inline-block;
+        }
+        #search > form a {
+          width: 67px;
+          height: 58px;
+          padding: 17px;
+          padding-left: 27px;
+          padding-right: 16px;
+          position: relative;
+          display: inline-block;
+          vertical-align: middle;
+        }
+        #search > form svg {
+          width: 24px;
+          height: 24px;
+          fill: #03c75a;
+        }
+      </style>
       <div id="search">
         <!-- input에서 enter를 쳤을 떄 다음 페이지로 넘어감. input만 있을 떄는 안 넘어감. -->
         <form action="">
+          <a href="#">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845z"></path></svg>
+          </a>
           <label for="search-input" class="blind">검색어 입력</label>
           <input id="search-input" type="text">
           <button class="blind">검색</button>
