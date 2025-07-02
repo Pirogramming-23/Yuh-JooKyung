@@ -16,6 +16,9 @@ function initGame() {
     updateAttemptsDisplay();
     clearResults();
     
+    // 이벤트 리스너 설정
+    setupEventListeners();
+    
     // 콘솔에 정답 출력 (테스트용)
     console.log("정답:", answer);
 }
@@ -32,6 +35,53 @@ function generateRandomNumbers() {
     }
     
     return numbers;
+}
+
+// 이벤트 리스너 설정
+function setupEventListeners() {
+    // 각 입력 필드에 이벤트 리스너 추가
+    for (let i = 1; i <= 3; i++) {
+        let inputField = document.getElementById(`number${i}`);
+        
+        // 숫자만 입력 가능하게
+        inputField.addEventListener('input', function(e) {
+            let value = e.target.value;
+            // 숫자가 아닌 문자 제거
+            value = value.replace(/[^0-9]/g, '');
+            e.target.value = value;
+            
+            // 한 자리 숫자만 허용
+            if (value.length > 1) {
+                e.target.value = value.slice(0, 1);
+            }
+        });
+        
+        // 키보드 이벤트 처리
+        inputField.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                check_numbers();
+            } else if (e.key === 'Backspace' && e.target.value === '') {
+                // 백스페이스로 이전 입력란으로 이동
+                if (i > 1) {
+                    document.getElementById(`number${i-1}`).focus();
+                }
+            }
+        });
+        
+        // 입력 후 자동으로 다음 입력란으로 이동
+        inputField.addEventListener('input', function(e) {
+            if (e.target.value.length === 1 && i < 3) {
+                document.getElementById(`number${i+1}`).focus();
+            }
+        });
+    }
+    
+    // Enter 키로 제출 버튼 활성화
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            check_numbers();
+        }
+    });
 }
 
 // 남은 시도 횟수 표시 업데이트
