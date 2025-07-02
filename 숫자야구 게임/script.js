@@ -43,8 +43,12 @@ function setupEventListeners() {
     for (let i = 1; i <= 3; i++) {
         let inputField = document.getElementById(`number${i}`);
         
+        // 기존 이벤트 리스너 제거 (중복 방지)
+        inputField.replaceWith(inputField.cloneNode(true));
+        let newInputField = document.getElementById(`number${i}`);
+        
         // 숫자만 입력 가능하게
-        inputField.addEventListener('input', function(e) {
+        newInputField.addEventListener('input', function(e) {
             let value = e.target.value;
             // 숫자가 아닌 문자 제거
             value = value.replace(/[^0-9]/g, '');
@@ -56,9 +60,20 @@ function setupEventListeners() {
             }
         });
         
+        // 입력 완료 후 다음 입력란으로 이동 (keyup 이벤트 사용)
+        newInputField.addEventListener('keyup', function(e) {
+            if (e.target.value.length === 1 && i < 3) {
+                // 약간의 지연을 두어 입력값이 확실히 처리된 후 이동
+                setTimeout(() => {
+                    document.getElementById(`number${i+1}`).focus();
+                }, 10);
+            }
+        });
+        
         // 키보드 이벤트 처리
-        inputField.addEventListener('keydown', function(e) {
+        newInputField.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
+                e.preventDefault(); // 기본 동작 방지
                 check_numbers();
             } else if (e.key === 'Backspace' && e.target.value === '') {
                 // 백스페이스로 이전 입력란으로 이동
@@ -67,21 +82,19 @@ function setupEventListeners() {
                 }
             }
         });
-        
-        // 입력 후 자동으로 다음 입력란으로 이동
-        inputField.addEventListener('input', function(e) {
-            if (e.target.value.length === 1 && i < 3) {
-                document.getElementById(`number${i+1}`).focus();
-            }
-        });
     }
     
-    // Enter 키로 제출 버튼 활성화
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            check_numbers();
-        }
-    });
+    // Enter 키로 제출 버튼 활성화 (전역 이벤트)
+    document.removeEventListener('keydown', handleGlobalKeydown);
+    document.addEventListener('keydown', handleGlobalKeydown);
+}
+
+// 전역 키보드 이벤트 핸들러
+function handleGlobalKeydown(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        check_numbers();
+    }
 }
 
 // 남은 시도 횟수 표시 업데이트
@@ -105,7 +118,8 @@ function validateInput(inputNumbers) {
     
     // 각 숫자가 0~9인지 확인
     for (let num of inputNumbers) {
-        if (num < 0 || num > 9 || isNaN(num)) {
+        if (isNaN(num) || num < 0 || num > 9) {
+            console.log("검증 실패 - 숫자:", num, "타입:", typeof num);
             alert("0~9 사이의 숫자만 입력해주세요!");
             return false;
         }
@@ -139,21 +153,49 @@ function compareNumbers(inputNumbers) {
 
 // 숫자 확인 버튼 클릭 시 실행되는 함수
 function check_numbers() {
+    // 중복 실행 방지
+    if (check_numbers.isRunning) {
+        return;
+    }
+    check_numbers.isRunning = true;
+    
     // 게임이 종료되었으면 리턴
     if (gameOver) {
         alert("게임이 종료되었습니다. 페이지를 새로고침하여 다시 시작하세요.");
+        check_numbers.isRunning = false;
         return;
     }
     
     // 입력값 가져오기
-    let num1 = parseInt(document.getElementById('number1').value);
-    let num2 = parseInt(document.getElementById('number2').value);
-    let num3 = parseInt(document.getElementById('number3').value);
+    let value1 = document.getElementById('number1').value;
+    let value2 = document.getElementById('number2').value;
+    let value3 = document.getElementById('number3').value;
+    
+    // 디버깅용 로그
+    console.log("원본 입력값:", value1, value2, value3);
+    console.log("입력값 길이:", value1.length, value2.length, value3.length);
+    console.log("입력값이 빈 문자열인지:", value1 === "", value2 === "", value3 === "");
+    
+    // 빈 값 체크
+    if (!value1 || !value2 || !value3) {
+        alert("3개의 숫자를 모두 입력해주세요!");
+        check_numbers.isRunning = false;
+        return;
+    }
+    
+    let num1 = parseInt(value1);
+    let num2 = parseInt(value2);
+    let num3 = parseInt(value3);
     
     let inputNumbers = [num1, num2, num3];
     
+    // 디버깅용 콘솔 로그
+    console.log("입력값:", inputNumbers);
+    console.log("입력값 타입:", inputNumbers.map(num => typeof num));
+    
     // 입력값 검증
     if (!validateInput(inputNumbers)) {
+        check_numbers.isRunning = false;
         return;
     }
     
@@ -176,6 +218,11 @@ function check_numbers() {
     
     // 입력란 초기화
     clearInputFields();
+    
+    // 중복 실행 방지 플래그 리셋
+    setTimeout(() => {
+        check_numbers.isRunning = false;
+    }, 100);
 }
 
 // 결과 표시 함수
