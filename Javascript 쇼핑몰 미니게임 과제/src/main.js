@@ -25,6 +25,46 @@ function createHTMLString(item) {
     `;
 }
 
+function onButtonClick(event, items) {
+
+    const dataset = event.target.dataset;
+    const key = dataset.key;
+    const value = dataset.value;
+    // console.log(dataset.key);
+    // console.log(dataset.value);
+    // console.log(key, value);
+    // console.log(items);
+
+
+    if (key == null || value == null) {
+        return;
+    }
+
+    // const filtered = items.filter(item => item[key] === value); 
+    // console.log(filtered);
+
+    // displayItems(filtered);
+    updateItems(items, key, value);
+}
+
+function updateItems(items, key, value) {
+    items.forEach(item => {
+        // console.log(item);
+        if (item.dataset[key] === value) {
+            item.classList.remove('invisible');
+        } else {
+            item.classList.add('invisible');
+        }
+    });
+}
+
+function setEventListeners(items) {
+    const logo = document.querySelector('.logo');
+    const buttons = document.querySelector('.buttons');
+    logo.addEventListener('click', () => displayItems(items));
+    buttons.addEventListener('click', event => onButtonClick(event, items));
+}
+
 // main
 loadItems()
 .then(items => {
