@@ -250,10 +250,19 @@ function clearInputFields() {
     document.getElementById('number1').focus();
 }
 
+// 제출 버튼 비활성화
+function disableSubmitButton() {
+    const submitButton = document.querySelector('.submit-button');
+    submitButton.disabled = true;
+    submitButton.style.opacity = '0.5';
+    submitButton.style.cursor = 'not-allowed';
+}
+
 // 승리 처리
 function gameWin() {
     gameOver = true;
     document.getElementById('game-result-img').src = './success.png';
+    disableSubmitButton();
     alert('축하합니다! 정답을 맞추셨습니다! 🎉');
 }
 
@@ -261,6 +270,7 @@ function gameWin() {
 function gameLose() {
     gameOver = true;
     document.getElementById('game-result-img').src = './fail.png';
+    disableSubmitButton();
     alert(`게임 오버! 정답은 ${answer.join('')}였습니다. 😢`);
 }
 
