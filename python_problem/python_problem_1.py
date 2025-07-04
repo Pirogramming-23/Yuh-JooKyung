@@ -1,21 +1,16 @@
+import random
+
+
 num = 0
 
 def brGame():
     global num
-    while(True):   
-        try:
-            N = int(input("부를 숫자의 개수를 입력하세요(1, 2, 3만 입력 가능) :"))
-            if N == 1 or N == 2 or N == 3:
-                break
-            else:
-                print("1, 2, 3 중 하나를 입력하세요")
-        except ValueError:
-            print("정수를 입력하세요")  # ValueError가 발생하면 수행
+    N = random.randint(1, 3)
     
     # 입력받은 수만큼 숫자 출력
     for i in range(N):
         num += 1
-        print("playerA : ", num)
+        print("computer : ", num)
         if num == 31:
             return "A"
     
@@ -33,7 +28,7 @@ def brGame():
     # 입력받은 수만큼 숫자 출력
     for i in range(M):
         num += 1
-        print("playerB : ", num)
+        print("player : ", num)
         if num == 31:
             return "B"
     
@@ -42,12 +37,12 @@ def brGame():
 def main():
     global num
     while(True):
-        winner = brGame()
-        if winner == "A":
-            print("playerA win!")
+        loser = brGame()
+        if loser == "A":
+            print("player win!")
             break
-        elif winner == "B":
-            print("playerB win!")
+        elif loser == "B":
+            print("computer win!")
             break
 
 main()
