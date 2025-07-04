@@ -3,6 +3,7 @@ let timer = null; // no-value
 let startTime = 0;
 let elapsedTime = 0;
 let isRunning = false;
+display.textContent = "00:00:00:00";
 
 function start() {
     if(!isRunning) {
@@ -17,10 +18,21 @@ function start() {
 
 function stop() {
 
+    if(isRunning) {
+        isRunning = false;
+        clearInterval(timer);
+        elapsedTime = Date.now() - startTime;
+    }
+
 }
 
 function reset() {
-
+    clearInterval(timer);
+    timer = null; // no-value
+    startTime = 0;
+    elapsedTime = 0;
+    isRunning = false;
+    display.textContent = "00:00:00:00";
 }
 
 function update() {
