@@ -5,6 +5,9 @@ let elapsedTime = 0;
 let isRunning = false;
 display.textContent = "00:00:00:00";
 
+const laps = [];
+const lapList = document.getElementById("laps");
+
 function start() {
     if(!isRunning) {
         isRunning = true;
@@ -22,6 +25,9 @@ function stop() {
         isRunning = false;
         clearInterval(timer);
         elapsedTime = Date.now() - startTime;
+
+        laps.push(elapsedTime);
+        renderLaps();
     }
 
 }
@@ -53,4 +59,13 @@ function update() {
 
     display.textContent = `${hours}:${minutes}:${seconds}:${milliseconds}`;
 
+}
+
+function renderLaps() {
+    lapList.innerHTML = "";
+    laps.forEach((lap, idx) => {
+        const li = document.createElement("li");
+        li.textContent = `Lap ${idx + 1}: ${lap}`;
+        lapList.appendChild(li);
+    });
 }
