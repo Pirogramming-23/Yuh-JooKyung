@@ -30,13 +30,13 @@ def main():
         N = input_num()
         player_A(N)
         if num == 31:
-            print("PlayerB 승리")
+            print("playerB win!")
             break
 
         M = input_num()
         player_B(M) 
         if num == 31:
-            print("PlayerA 승리")
+            print("playerA win!")
             break
 
 
