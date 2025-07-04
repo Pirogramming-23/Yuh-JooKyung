@@ -12,22 +12,32 @@ def input_num():
             print("정수를 입력하세요")  # ValueError가 발생하면 수행
     return N
 
-def player_A(N, num):
+def player_A(N):
+    global num
     for i in range(N):
         num += 1
         print("PlayerA : ", num)
 
-def player_B(N, num):
+def player_B(N):
+    global num
     for i in range(N):
         num += 1
         print("PlayerB : ", num)
 
 def main():
+    global num
     while(True):
         N = input_num()
-        player_A(N, num)
+        player_A(N)
+        if num == 31:
+            print("PlayerB 승리")
+            break
+
         M = input_num()
-        player_B(M, num) 
+        player_B(M) 
+        if num == 31:
+            print("PlayerA 승리")
+            break
 
 
 main()
