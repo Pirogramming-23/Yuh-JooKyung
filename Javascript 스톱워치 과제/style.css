@@ -4,3 +4,42 @@ body {
     align-items: center;
     background-color: #f0f0f0;
 }
+
+#laps {
+  list-style: none;      /* 큰 점(불릿) 제거 */
+  padding: 0;
+  margin: 0;
+}
+
+#laps li {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;       /* li 전체에 pointer */
+  transition: background 0.2s;
+}
+
+#laps li.selected {
+  background: #fff9c4;   /* 선택된 항목 배경 */
+}
+
+#laps li input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;       /* 체크박스에도 pointer */
+}
+
+#deleteSelected {
+  margin: 10px 0;
+  padding: 6px 16px;
+  background: #ff7043;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+#deleteSelected:hover {
+  background: #d84315;
+}

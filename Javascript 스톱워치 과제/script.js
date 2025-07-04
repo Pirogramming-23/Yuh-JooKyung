@@ -8,6 +8,8 @@ display.textContent = "00:00:00:00";
 const laps = [];
 const lapList = document.getElementById("laps");
 
+const selectedLaps = new Set();
+
 function start() {
     if(!isRunning) {
         isRunning = true;
@@ -39,6 +41,9 @@ function reset() {
     elapsedTime = 0;
     isRunning = false;
     display.textContent = "00:00:00:00";
+    laps.length = 0;
+    selectedLaps.clear();
+    renderLaps();
 }
 
 function update() {
@@ -46,18 +51,7 @@ function update() {
     const currentTime = Date.now();
     elapsedTime = currentTime - startTime;
 
-    let hours = Math.floor(elapsedTime / (1000 * 60 * 60));
-    let minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
-    let seconds = Math.floor((elapsedTime / 1000) % 60);
-    let milliseconds = Math.floor((elapsedTime % 1000) / 10);
-    
-
-    hours = String(hours).padStart(2, "0");
-    minutes = String(minutes).padStart(2, "0");
-    seconds = String(seconds).padStart(2, "0");
-    milliseconds = String(milliseconds).padStart(2, "0");
-
-    display.textContent = `${hours}:${minutes}:${seconds}:${milliseconds}`;
+    display.textContent = formatElapsedTime(elapsedTime);
 
 }
 
@@ -65,7 +59,55 @@ function renderLaps() {
     lapList.innerHTML = "";
     laps.forEach((lap, idx) => {
         const li = document.createElement("li");
-        li.textContent = `Lap ${idx + 1}: ${lap}`;
+
+        // 체크박스 생성
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = selectedLaps.has(idx);
+        checkbox.addEventListener("change", function(e) {
+            e.stopPropagation(); // li 클릭과 중복 방지
+            if (checkbox.checked) {
+                selectedLaps.add(idx);
+            } else {
+                selectedLaps.delete(idx);
+            }
+            renderLaps();
+        });
+
+        // li 클릭 시 체크박스 토글
+        li.addEventListener("click", function() {
+            checkbox.checked = !checkbox.checked;
+            checkbox.dispatchEvent(new Event("change"));
+        });
+
+        // 선택된 경우 클래스 추가
+        if (selectedLaps.has(idx)) {
+            li.classList.add("selected");
+        }
+
+        const text = document.createTextNode(` Lap ${idx + 1}: ${formatElapsedTime(lap)}`);
+        li.appendChild(checkbox);
+        li.appendChild(text);
+
         lapList.appendChild(li);
     });
+}
+
+const deleteBtn = document.getElementById("deleteSelected");
+deleteBtn.addEventListener("click", function() {
+    // idx 내림차순으로 삭제해야 인덱스 꼬임 방지
+    const toDelete = Array.from(selectedLaps).sort((a, b) => b - a);
+    toDelete.forEach(idx => {
+        laps.splice(idx, 1);
+    });
+    selectedLaps.clear();
+    renderLaps();
+});
+
+function formatElapsedTime(elapsedTime) {
+    let hours = String(Math.floor(elapsedTime / (1000 * 60 * 60))).padStart(2, "0");
+    let minutes = String(Math.floor((elapsedTime / (1000 * 60)) % 60)).padStart(2, "0");
+    let seconds = String(Math.floor((elapsedTime / 1000) % 60)).padStart(2, "0");
+    let milliseconds = String(Math.floor((elapsedTime % 1000) / 10)).padStart(2, "0");
+    return `${hours}:${minutes}:${seconds}:${milliseconds}`;
 }
