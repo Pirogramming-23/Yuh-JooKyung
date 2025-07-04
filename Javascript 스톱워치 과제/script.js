@@ -44,6 +44,7 @@ function reset() {
     laps.length = 0;
     selectedLaps.clear();
     renderLaps();
+    updateSelectAllCheckbox();
 }
 
 function update() {
@@ -91,6 +92,7 @@ function renderLaps() {
 
         lapList.appendChild(li);
     });
+    updateSelectAllCheckbox();
 }
 
 const deleteBtn = document.getElementById("deleteSelected");
@@ -102,7 +104,53 @@ deleteBtn.addEventListener("click", function() {
     });
     selectedLaps.clear();
     renderLaps();
+    updateSelectAllCheckbox();
 });
+
+// 전체 선택 체크박스
+const selectAllCheckbox = document.getElementById("selectAll");
+selectAllCheckbox.addEventListener("change", function() {
+    if (this.checked) {
+        // 모든 lap 선택
+        laps.forEach((_, idx) => {
+            selectedLaps.add(idx);
+        });
+    } else {
+        // 모든 선택 해제
+        selectedLaps.clear();
+    }
+    renderLaps();
+});
+
+// 전체 삭제 버튼
+const deleteAllBtn = document.getElementById("deleteAll");
+deleteAllBtn.addEventListener("click", function() {
+    if (laps.length > 0) {
+        if (confirm("모든 기록을 삭제하시겠습니까?")) {
+            laps.length = 0;
+            selectedLaps.clear();
+            renderLaps();
+            updateSelectAllCheckbox();
+        }
+    }
+});
+
+// 전체 선택 체크박스 상태 업데이트
+function updateSelectAllCheckbox() {
+    if (laps.length === 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+    } else if (selectedLaps.size === laps.length) {
+        selectAllCheckbox.checked = true;
+        selectAllCheckbox.indeterminate = false;
+    } else if (selectedLaps.size > 0) {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = true;
+    } else {
+        selectAllCheckbox.checked = false;
+        selectAllCheckbox.indeterminate = false;
+    }
+}
 
 function formatElapsedTime(elapsedTime) {
     let hours = String(Math.floor(elapsedTime / (1000 * 60 * 60))).padStart(2, "0");

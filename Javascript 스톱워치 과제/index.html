@@ -1,28 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Javascript 스톱워치 과제</title>
+    <meta name="description" content="현대적인 스톱워치 애플리케이션">
+    <title>스톱워치</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="wrapper">
-        <h1>Stopwatch</h1>
+        <h1>스톱워치</h1>
         
         <div id="container">
-            <div id="display">00:00:00</div>
+            <div id="display">00:00:00:00</div>
+            
             <div id="controls">
-                <button id="startBtn" onclick="start()">Start</button>
-                <button id="stopBtn" onclick="stop()">Stop</button>
-                <button id="resetBtn" onclick="reset()">Reset</button>
+                <button id="startBtn" onclick="start()">시작</button>
+                <button id="stopBtn" onclick="stop()">정지</button>
+                <button id="resetBtn" onclick="reset()">리셋</button>
             </div>
+            
             <button id="deleteSelected">선택 삭제</button>
-            <ul id="laps">
-                
-            </ul>
+            
+            <div id="selectAllContainer">
+                <input type="checkbox" id="selectAll">
+                <label for="selectAll">전체 선택</label>
+                <button id="deleteAll">전체 삭제</button>
+            </div>
+            
+            <ul id="laps"></ul>
         </div>
-      </div>
+    </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
