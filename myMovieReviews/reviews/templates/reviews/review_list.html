@@ -1,0 +1,37 @@
+{% extends 'reviews/base.html' %}
+
+{% block title %}영화 리뷰 목록 - My Movie Reviews{% endblock %}
+
+{% block content %}
+<h2>📽️ 나만의 영화 리뷰</h2>
+
+<div style="text-align: right; margin-bottom: 20px;">
+    <a href="{% url 'reviews:review_create' %}" class="btn btn-success">🎬 새 리뷰 작성</a>
+</div>
+
+{% if reviews %}
+    <div class="reviews-container">
+        {% for review in reviews %}
+        <div class="movie-card">
+            <h3>
+                <a href="{% url 'reviews:review_detail' pk=review.pk %}" style="color: #333; text-decoration: none;">
+                    {{ review.title }}
+                </a>
+            </h3>
+            <div class="meta">
+                <p><strong>개봉년도:</strong> {{ review.release_year }}년</p>
+                <p><strong>장르:</strong> {{ review.genre }}</p>
+                <p><strong>별점:</strong> <span class="rating">⭐ {{ review.rating }}/5점</span></p>
+                <p><strong>작성일:</strong> {{ review.created_at|date:"Y년 m월 d일" }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div style="text-align: center; padding: 50px;">
+        <h3>아직 작성된 리뷰가 없습니다.</h3>
+        <p>첫 번째 영화 리뷰를 작성해보세요!</p>
+        <a href="{% url 'reviews:review_create' %}" class="btn btn-success">🎬 첫 리뷰 작성하기</a>
+    </div>
+{% endif %}
+{% endblock %} 
