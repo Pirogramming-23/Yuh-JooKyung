@@ -1,0 +1,38 @@
+{% extends 'reviews/base.html' %}
+
+{% block title %}리뷰 삭제 - My Movie Reviews{% endblock %}
+
+{% block content %}
+<div class="delete-confirmation">
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'reviews:review_detail' pk=review.pk %}" class="btn">← 리뷰로 돌아가기</a>
+    </div>
+
+    <div class="movie-card" style="text-align: center; padding: 2rem;">
+        <h2 style="color: #dc3545; margin-bottom: 1rem;">리뷰 삭제 확인</h2>
+        
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: #333;">"{{ review.title }}" 리뷰를 삭제하시겠습니까?</h3>
+            <p style="color: #666; margin-top: 1rem;">
+                이 작업은 되돌릴 수 없습니다. 정말로 삭제하시겠습니까?
+            </p>
+        </div>
+
+        <div class="review-summary" style="background-color: #f8f9fa; padding: 1rem; border-radius: 5px; margin-bottom: 2rem; text-align: left;">
+            <h4 style="margin-top: 0; color: #333;">삭제될 리뷰 정보:</h4>
+            <p><strong>영화 제목:</strong> {{ review.title }}</p>
+            <p><strong>감독:</strong> {{ review.director }}</p>
+            <p><strong>장르:</strong> {{ review.genre }}</p>
+                            <p><strong>별점:</strong> <span class="rating">{{ review.rating }}/5점</span></p>
+            <p><strong>작성일:</strong> {{ review.created_at|date:"Y년 m월 d일" }}</p>
+        </div>
+
+        <form method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" style="margin-right: 1rem;">삭제 확인</button>
+        </form>
+        
+        <a href="{% url 'reviews:review_detail' pk=review.pk %}" class="btn">취소</a>
+    </div>
+</div>
+{% endblock %} 

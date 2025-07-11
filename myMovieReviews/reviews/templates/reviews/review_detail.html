@@ -1,0 +1,49 @@
+{% extends 'reviews/base.html' %}
+
+{% block title %}{{ review.title }} - My Movie Reviews{% endblock %}
+
+{% block content %}
+<div class="review-detail">
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'reviews:review_list' %}" class="btn">← 목록으로 돌아가기</a>
+    </div>
+
+    <div class="movie-card" style="padding: 2rem;">
+        <h1 style="color: #333; margin-bottom: 1rem;">{{ review.title }}</h1>
+        
+        <div class="movie-info" style="margin-bottom: 2rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <p><strong>감독:</strong> {{ review.director }}</p>
+                    <p><strong>주연:</strong> {{ review.cast }}</p>
+                    <p><strong>장르:</strong> {{ review.genre }}</p>
+                </div>
+                <div>
+                    <p><strong>별점:</strong> <span class="rating">{{ review.rating }}/5점</span></p>
+                    <p><strong>러닝타임:</strong> {{ review.running_time }}분</p>
+                    <p><strong>개봉년도:</strong> {{ review.release_year }}년</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="review-content" style="margin-bottom: 2rem;">
+            <h3 style="color: #333; border-bottom: 2px solid #007bff; padding-bottom: 0.5rem;">리뷰 내용</h3>
+            <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 5px; line-height: 1.8;">
+                {{ review.content|linebreaks }}
+            </div>
+        </div>
+
+        <div class="meta-info" style="color: #666; font-size: 0.9rem; border-top: 1px solid #ddd; padding-top: 1rem;">
+            <p><strong>작성일:</strong> {{ review.created_at|date:"Y년 m월 d일 H:i" }}</p>
+            {% if review.updated_at != review.created_at %}
+                <p><strong>수정일:</strong> {{ review.updated_at|date:"Y년 m월 d일 H:i" }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'reviews:review_edit' pk=review.pk %}" class="btn">수정</a>
+        <a href="{% url 'reviews:review_delete' pk=review.pk %}" class="btn btn-danger">삭제</a>
+    </div>
+</div>
+{% endblock %} 
