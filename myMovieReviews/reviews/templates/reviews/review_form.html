@@ -1,0 +1,112 @@
+{% extends 'reviews/base.html' %}
+
+{% block title %}{{ title }} - My Movie Reviews{% endblock %}
+
+{% block content %}
+<div class="review-form">
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'reviews:review_list' %}" class="btn">← 목록으로 돌아가기</a>
+    </div>
+
+    <h2>{{ title }}</h2>
+
+    <form method="post" style="max-width: 800px;">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.help_text %}
+                <div class="help-text">{{ form.title.help_text }}</div>
+            {% endif %}
+            {% if form.title.errors %}
+                <div class="error">{{ form.title.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.director.id_for_label }}">{{ form.director.label }}</label>
+            {{ form.director }}
+            {% if form.director.help_text %}
+                <div class="help-text">{{ form.director.help_text }}</div>
+            {% endif %}
+            {% if form.director.errors %}
+                <div class="error">{{ form.director.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.cast.id_for_label }}">{{ form.cast.label }}</label>
+            {{ form.cast }}
+            {% if form.cast.help_text %}
+                <div class="help-text">{{ form.cast.help_text }}</div>
+            {% endif %}
+            {% if form.cast.errors %}
+                <div class="error">{{ form.cast.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.genre.id_for_label }}">{{ form.genre.label }}</label>
+            {{ form.genre }}
+            {% if form.genre.help_text %}
+                <div class="help-text">{{ form.genre.help_text }}</div>
+            {% endif %}
+            {% if form.genre.errors %}
+                <div class="error">{{ form.genre.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label for="{{ form.rating.id_for_label }}">{{ form.rating.label }}</label>
+                {{ form.rating }}
+                {% if form.rating.help_text %}
+                    <div class="help-text">{{ form.rating.help_text }}</div>
+                {% endif %}
+                {% if form.rating.errors %}
+                    <div class="error">{{ form.rating.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.running_time.id_for_label }}">{{ form.running_time.label }}</label>
+                {{ form.running_time }}
+                {% if form.running_time.help_text %}
+                    <div class="help-text">{{ form.running_time.help_text }}</div>
+                {% endif %}
+                {% if form.running_time.errors %}
+                    <div class="error">{{ form.running_time.errors.0 }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.release_year.id_for_label }}">{{ form.release_year.label }}</label>
+            {{ form.release_year }}
+            {% if form.release_year.help_text %}
+                <div class="help-text">{{ form.release_year.help_text }}</div>
+            {% endif %}
+            {% if form.release_year.errors %}
+                <div class="error">{{ form.release_year.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+            {{ form.content }}
+            {% if form.content.help_text %}
+                <div class="help-text">{{ form.content.help_text }}</div>
+            {% endif %}
+            {% if form.content.errors %}
+                <div class="error">{{ form.content.errors.0 }}</div>
+            {% endif %}
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <button type="submit" class="btn btn-success">저장하기</button>
+            <a href="{% url 'reviews:review_list' %}" class="btn">취소</a>
+        </div>
+    </form>
+</div>
+{% endblock %} 
